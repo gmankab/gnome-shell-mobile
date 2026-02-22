@@ -7,43 +7,41 @@ issue_repository: https://gitlab.gnome.org/verdre/gnome-shell-mobile
 srpm_build_deps:
   - meson
 packages:
-  gnome-48-mobile:
+  gnome-49-mobile:
     actions:
-      get-current-version: echo 48^mobile
+      get-current-version: echo 49^mobile
       create-archive:
-        # Set version to 48^mobile in meson.build files
-        - "sed -i \"2s/.*/  version: '48^mobile',/\" meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile',/\" subprojects/shew/meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile',/\" subprojects/extensions-tool/meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile',/\" subprojects/extensions-app/meson.build"
+        # Set version to 49^mobile in meson.build files
+        - "sed -i \"2s/.*/  version: '49^mobile',/\" meson.build"
+        - "sed -i \"2s/.*/  version: '49^mobile',/\" subprojects/extensions-tool/meson.build"
+        - "sed -i \"2s/.*/  version: '49^mobile',/\" subprojects/extensions-app/meson.build"
         - sed -i "/meson.add_dist_script('meson\/check-version.py', meson.project_version(), 'NEWS')/d" meson.build
         # Create archive
         - meson subprojects download
         - bash -c 'tar -zvcf .packit_rpm/${PACKIT_PROJECT_NAME_VERSION}.tar.gz --exclude "*.rpm" --exclude .packit_rpm --exclude .git --transform "s|^|${PACKIT_PROJECT_NAME_VERSION}/|" .'
         - bash -c 'echo ".packit_rpm/${PACKIT_PROJECT_NAME_VERSION}.tar.gz"'
       post-upstream-clone:
-        # Use the Fedora 42 specfile
+        # Use the Fedora 43 specfile
         - rm -rf .packit_rpm
-        - git clone https://src.fedoraproject.org/rpms/gnome-shell .packit_rpm --branch f42 --depth=1
+        - git clone https://src.fedoraproject.org/rpms/gnome-shell .packit_rpm --branch f43 --depth=1
         - rm -fv .packit_rpm/sources
         # Add deps for building from git
         - "sed -i 's/^BuildRequires:  git/BuildRequires:  git asciidoc sassc cmake pkgconfig(bash-completion)/' .packit_rpm/gnome-shell.spec"
-        - "sed -i 's/^BuildRequires:  mutter-devel >= %{mutter_version}/BuildRequires:  mutter-devel = 48^mobile/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^BuildRequires:  mutter-devel >= %{mutter_version}/BuildRequires:  mutter-devel = 49^mobile/' .packit_rpm/gnome-shell.spec"
         # Add runtime deps
-        - "sed -i 's/^Requires:       mutter%{?_isa} >= %{mutter_version}/Requires:  mutter%{?_isa} = 48^mobile/' .packit_rpm/gnome-shell.spec"
-        - "sed -i 's/^Requires:       gnome-settings-daemon%{?_isa} >= %{gnome_settings_daemon_version}/Requires:  gnome-settings-daemon%{?_isa} = 48^mobile/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^Requires:       mutter%{?_isa} >= %{mutter_version}/Requires:  mutter%{?_isa} = 49^mobile/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^Requires:       gnome-settings-daemon%{?_isa} >= %{gnome_settings_daemon_version}/Requires:  gnome-settings-daemon%{?_isa} = 49^mobile/' .packit_rpm/gnome-shell.spec"
         # Add new files
         - sed -i "/^%files -f %{name}.lang$/a %{_datadir}/dbus-1/services/org.gnome.Shell.SensorDaemon.service" .packit_rpm/gnome-shell.spec
     specfile_path: .packit_rpm/gnome-shell.spec
   mobile-devel:
     actions:
-      get-current-version: echo 48^mobile-devel
+      get-current-version: echo 49^mobile-devel
       create-archive:
-        # Set version to 48^mobile-devel in meson.build files
-        - "sed -i \"2s/.*/  version: '48^mobile-devel',/\" meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile-devel',/\" subprojects/shew/meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile-devel',/\" subprojects/extensions-tool/meson.build"
-        - "sed -i \"2s/.*/  version: '48^mobile-devel',/\" subprojects/extensions-app/meson.build"
+        # Set version to 49^mobile-devel in meson.build files
+        - "sed -i \"2s/.*/  version: '49^mobile-devel',/\" meson.build"
+        - "sed -i \"2s/.*/  version: '49^mobile-devel',/\" subprojects/extensions-tool/meson.build"
+        - "sed -i \"2s/.*/  version: '49^mobile-devel',/\" subprojects/extensions-app/meson.build"
         - sed -i "/meson.add_dist_script('meson\/check-version.py', meson.project_version(), 'NEWS')/d" meson.build
         # Create archive
         - meson subprojects download
@@ -56,33 +54,33 @@ packages:
         - rm -fv .packit_rpm/sources
         # Add deps for building from git
         - "sed -i 's/^BuildRequires:  git/BuildRequires:  git asciidoc sassc cmake pkgconfig(bash-completion)/' .packit_rpm/gnome-shell.spec"
-        - "sed -i 's/^BuildRequires:  mutter-devel >= %{mutter_version}/BuildRequires:  mutter-devel = 48^mobile.devel/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^BuildRequires:  mutter-devel >= %{mutter_version}/BuildRequires:  mutter-devel = 49^mobile.devel/' .packit_rpm/gnome-shell.spec"
         # Add runtime deps
-        - "sed -i 's/^Requires:       mutter%{?_isa} >= %{mutter_version}/Requires:  mutter%{?_isa} = 48^mobile.devel/' .packit_rpm/gnome-shell.spec"
-        - "sed -i 's/^Requires:       gnome-settings-daemon%{?_isa} >= %{gnome_settings_daemon_version}/Requires:  gnome-settings-daemon%{?_isa} = 48^mobile.devel/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^Requires:       mutter%{?_isa} >= %{mutter_version}/Requires:  mutter%{?_isa} = 49^mobile.devel/' .packit_rpm/gnome-shell.spec"
+        - "sed -i 's/^Requires:       gnome-settings-daemon%{?_isa} >= %{gnome_settings_daemon_version}/Requires:  gnome-settings-daemon%{?_isa} = 49^mobile.devel/' .packit_rpm/gnome-shell.spec"
         # Add new files
         - sed -i "/^%files -f %{name}.lang$/a %{_datadir}/dbus-1/services/org.gnome.Shell.SensorDaemon.service" .packit_rpm/gnome-shell.spec
     specfile_path: .packit_rpm/gnome-shell.spec
 jobs:
   - job: copr_build
     trigger: pull_request
-    branch: gnome-48-mobile
+    branch: gnome-49-mobile
     packages:
-      - gnome-48-mobile
+      - gnome-49-mobile
     additional_repos:
       - copr://@mobility/gnome-mobile
     targets:
-      - fedora-42-x86_64
+      - fedora-43-x86_64
   - job: copr_build
     trigger: commit
-    branch: gnome-48-mobile
+    branch: gnome-49-mobile
     packages:
-      - gnome-48-mobile
+      - gnome-49-mobile
     owner: "@mobility"
     project: gnome-mobile
     targets:
-      - fedora-42-aarch64
-      - fedora-42-x86_64
+      - fedora-43-aarch64
+      - fedora-43-x86_64
       - fedora-rawhide-aarch64
       - fedora-rawhide-x86_64
   - job: copr_build
@@ -102,7 +100,7 @@ jobs:
     owner: "@mobility"
     project: gnome-mobile
     targets:
-      - fedora-42-aarch64
-      - fedora-42-x86_64
+      - fedora-43-aarch64
+      - fedora-43-x86_64
       - fedora-rawhide-aarch64
       - fedora-rawhide-x86_64
